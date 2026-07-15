@@ -4,12 +4,7 @@ public class ajlab {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-
-        System.out.println("====================================");
         System.out.println("   Welcome to the Advance Java Lab");
-        System.out.println("====================================");
-
-        // Chat Section
         System.out.print("\nEnter a message: ");
         String message = sc.nextLine();
 
@@ -23,7 +18,6 @@ public class ajlab {
             System.out.println("I don't understand.");
         }
 
-        // Calculator Section
         System.out.println("\n----- Calculator -----");
 
         System.out.print("Enter first number: ");
