@@ -1,0 +1,253 @@
+JDBC CRUD Project Documentation
+
+1. Title
+Student Database Management System using JDBC and MySQL.
+
+2. Aim
+To develop a Java application using JDBC that connects to a MySQL database and performs CRUD (Create, Read, Update, Delete) operations on a Student table.
+
+3. Objective
+-Learn JDBC architecture.
+-Establish a connection between Java and MySQL.
+-Execute SQL statements using JDBC.
+-Perform CRUD operations.
+-Display database records in Java.
+
+4.Softwares requirement
+| Software         | Version           |
+| ---------------- | ----------------- |
+| Operating System | Linux (Ubuntu)    |
+| Java JDK         | 17                |
+| MySQL Server     | 8.x               |
+| JDBC Driver      | MySQL Connector/J |
+| Terminal         | Bash              |
+
+5. Hardware Requirements
+-Processor: Intel i3 or above
+-RAM: 4 GB minimum
+-Disk Space: 1 GB free
+
+6. Introduction
+Java Database Connectivity (JDBC) is an API that enables Java applications to communicate with relational databases. It provides classes and interfaces to establish a connection, execute SQL queries, and process results.
+In this project, JDBC is used to connect a Java application to a MySQL database and perform CRUD operations on student records.
+
+7. JDBC Architecture
+Java Application
+       │
+       ▼
+JDBC API
+       │
+       ▼
+JDBC Driver
+       │
+       ▼
+MySQL Database
+
+8. Database Design
+  DATA BASE
+         </>SQL
+         studentdb
+Table
+</>SQL
+student
+| Field   | Type         | Constraint  |
+| ------- | ------------ | ----------- |
+| rollno  | INT          | Primary Key |
+| name    | VARCHAR(50)  | Not Null    |
+| address | VARCHAR(100) |             |
+
+
+9. SQL Commands
+-Create Database
+	CREATE DATABASE studentdb;
+-Use Database
+	USE studentdb;
+-Create Table
+	CREATE TABLE student(
+    rollno INT PRIMARY KEY,
+    name VARCHAR(50),
+    address VARCHAR(100)
+);
+
+10. Project Structure
+jdbc/
+
+├── mysql-connector-j-9.x.x.jar
+└── StudentJDBC.java
+
+11. Algorithm
+-Load the JDBC driver.
+-Connect to the MySQL database.
+-Create the Student table if it does not exist.
+-Insert student records.
+-Update an existing record.
+-Delete a record.
+-Retrieve all records.
+-Display the records.
+-Close the ResultSet, Statement, and Connection.
+
+12. Program Explanation
+   Step 1: Load Driver
+      Class.forName("com.mysql.cj.jdbc.Driver");
+Loads the MySQL JDBC driver into memory.
+   Step 2: Create Connection
+      Connection con =DriverManager.getConnection(URL, USER, PASSWORD);
+Connects the Java application to the MySQL database.
+   Step 3: Create Statement
+      Statement stmt = con.createStatement();
+Creates an object to execute SQL statements.
+   Step 4: Create Table
+Creates the Student table if it is not already present.
+   Step 5: Insert Data
+Uses SQL INSERT statements to add student records.
+   Step 6: Update Data
+Uses an UPDATE statement to modify an existing record.
+   Step 7: Delete Data
+Uses a DELETE statement to remove a student record.
+   Step 8: Display Records
+Executes a SELECT query and displays the results using ResultSet.
+
+
+13.JAVA program
+
+```java
+import java.sql.*;
+
+public class StudentJDBC {
+
+    // Database credentials
+    static final String URL = "jdbc:mysql://localhost:3306/studentdb";
+    static final String USER = "javauser";
+    static final String PASSWORD = "password";
+
+    public static void main(String[] args) {
+
+        try {
+            // Load JDBC Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establish Connection
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            // Create Statement
+            Statement stmt = con.createStatement();
+
+            // Create Student Table
+            String createTable = "CREATE TABLE IF NOT EXISTS student (" +
+                                 "rollno INT PRIMARY KEY," +
+                                 "name VARCHAR(50)," +
+                                 "address VARCHAR(100))";
+
+            stmt.execute(createTable);
+            System.out.println("Table created successfully.");
+
+            // Insert Records
+            stmt.executeUpdate("INSERT INTO student VALUES (1,'Ravi','Chennai')");
+            stmt.executeUpdate("INSERT INTO student VALUES (2,'John','Delhi')");
+            stmt.executeUpdate("INSERT INTO student VALUES (3,'Anita','Bangalore')");
+
+            System.out.println("Records inserted successfully.");
+
+            // Update Record
+            stmt.executeUpdate(
+                "UPDATE student SET address='Mumbai' WHERE rollno=2"
+            );
+
+            System.out.println("Record updated successfully.");
+
+            // Delete Record
+            stmt.executeUpdate(
+                "DELETE FROM student WHERE rollno=3"
+            );
+
+            System.out.println("Record deleted successfully.");
+
+            // Retrieve and Display Records
+            ResultSet rs = stmt.executeQuery("SELECT * FROM student");
+
+            System.out.println("\nStudent Records");
+            System.out.println("-------------------------------------");
+            System.out.printf("%-10s %-15s %-15s%n", "Roll No", "Name", "Address");
+            System.out.println("-------------------------------------");
+
+            while (rs.next()) {
+                System.out.printf(
+                    "%-10d %-15s %-15s%n",
+                    rs.getInt("rollno"),
+                    rs.getString("name"),
+                    rs.getString("address")
+                );
+            }
+
+            System.out.println("-------------------------------------");
+
+            // Close Resources
+            rs.close();
+            stmt.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+
+14. Flowchart
+	Start
+          │
+          ▼
+   Load JDBC Driver
+          │
+          ▼
+ Connect to Database
+          │
+          ▼
+  Create Student Table
+          │
+          ▼
+    Insert Records
+          │
+          ▼
+    Update Record
+          │
+          ▼
+    Delete Record
+          │
+          ▼
+    Retrieve Records
+          │
+          ▼
+   Display Results
+          │
+          ▼
+ Close Connection
+          │
+          ▼
+         End
+  
+  
+15. Output
+	Table created.
+Records Inserted.
+Record Updated.
+Record Deleted.
+
+--------------------------------------
+1 Ravi Chennai
+2 John Mumbai
+--------------------------------------
+
+16. Conclusion
+The project successfully demonstrates how Java applications interact with a MySQL database using JDBC.
+CRUD operations were implemented using SQL statements, and the application established a database connection, manipulated data, and displayed the results correctly.
+
+
+17. Future Enhancements
+Use PreparedStatement instead of Statement to improve security and prevent SQL injection.
+Add user input with the Scanner class.
+Build a menu-driven application.
+Develop a graphical user interface using JavaFX or Swing.
+Create a web application using Servlets and JSP.
+Use Maven or Gradle for dependency management.
